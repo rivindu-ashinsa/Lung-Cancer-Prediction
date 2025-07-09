@@ -1,61 +1,66 @@
-# Lung Cancer Prediction
+# Lung Cancer Survival Prediction
 
-This project is focused on predicting lung cancer survival status using a dataset from the Idealize 2025 Datathon competition.
+Predicting lung cancer survival status using clinical and demographic data from the Idealize 2025 Datathon.
+
+## Overview
+
+This repository contains code and resources for building machine learning models to predict lung cancer survival. The workflow includes data cleaning, feature engineering, model training, and evaluation, all implemented in a modular and reproducible manner.
 
 ## Project Structure
 
-- `metamorphs (1).ipynb`: Main Jupyter notebook containing all data loading, preprocessing, feature engineering, and modeling code.
-- `README.md`: Project overview and instructions.
+- **metamorphs (1).ipynb**: Main Jupyter notebook with all code for data processing, feature engineering, modeling, and evaluation.
+- **README.md**: Project documentation and instructions.
 
-## Workflow Overview
+## Getting Started
 
-### 1. Data Loading
+### Prerequisites
 
-The notebook loads the training data from `/kaggle/input/idealize-2025-datathon-competition/train.csv` and the test data from `/kaggle/input/idealize-2025-datathon-competition/test.csv`.
+- Python 3.11 or higher
+- Install dependencies:
+  - pandas
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - tensorflow (for neural network models)
 
-### 2. Data Cleaning & Preprocessing
+You can install all requirements with:
+```bash
+pip install pandas numpy scikit-learn matplotlib tensorflow
+```
 
-- Drops unnecessary columns: `first_name`, `last_name`, `record_id`.
-- Fills missing values in `cigarettes_per_day` for non-smokers.
-- Encodes binary columns (`family_cancer_history`, `has_other_cancer`, `asthma_diagnosis`, `liver_condition`, `blood_pressure_status`, `sex`) as 0/1.
-- Standardizes and one-hot encodes categorical columns (`smoking_status`, `treatment_type`).
-- Drops `residence_state` after encoding.
-- Converts date columns to datetime and creates new features: `treatment_duration` and `diagnosis_to_treatment_delay`.
+### Data
 
-### 3. Feature Engineering
+- The project expects data in the Kaggle competition format:
+  - `train.csv`
+  - `test.csv`
+- By default, the notebook loads data from `/kaggle/input/idealize-2025-datathon-competition/`.
 
-- Custom transformers (`ProcessSmoking`, `ProcessCols`, `EncodeCatCols`, `FormatDates`) are defined for use in a scikit-learn pipeline.
-- The pipeline automates all preprocessing steps for both training and test data.
+### Running the Project
 
-### 4. Modeling
+1. Open `metamorphs (1).ipynb` in Jupyter Notebook or VS Code.
+2. Run cells sequentially to:
+   - Load and preprocess data
+   - Engineer features
+   - Train and evaluate models
+3. Uncomment or modify model training cells to experiment with different algorithms.
 
-- The notebook includes commented-out code for training and evaluating several models:
-  - Logistic Regression
-  - Random Forest
-  - K-Nearest Neighbors
-  - Neural Network (TensorFlow/Keras)
-- Model evaluation is performed using accuracy score.
+## Workflow Summary
 
-### 5. Visualization
-
-- (Optional) Code for plotting training and validation accuracy curves using matplotlib is included but commented out.
-
-## How to Run
-
-1. Open `metamorphs (1).ipynb` in Jupyter or VS Code.
-2. Run each cell sequentially to preprocess the data and train models.
-3. Modify or uncomment model training cells as needed for experimentation.
-
-## Requirements
-
-- Python 3.11+
-- pandas, numpy, scikit-learn, matplotlib, tensorflow (for neural network)
+1. **Data Loading**: Import training and test datasets.
+2. **Preprocessing**:
+   - Drop irrelevant columns (`first_name`, `last_name`, `record_id`)
+   - Handle missing values (e.g., fill `cigarettes_per_day` for non-smokers)
+   - Encode binary and categorical features
+   - Convert and engineer date features (e.g., treatment duration)
+3. **Feature Engineering**: Use custom scikit-learn transformers for streamlined preprocessing.
+4. **Modeling**: Train and evaluate models such as Logistic Regression, Random Forest, KNN, and Neural Networks.
+5. **Visualization**: (Optional) Plot training/validation metrics.
 
 ## Notes
 
-- The notebook is designed for use in a Kaggle environment, with data files loaded from `/kaggle/input/`.
-- All preprocessing steps are encapsulated in reusable classes for cleaner code and easier experimentation.
+- All preprocessing is encapsulated in reusable classes for clarity and flexibility.
+- The notebook is designed for Kaggle but can be adapted for local use by changing data paths.
 
 ---
 
-For more details, see the code and comments in [metamorphs (1).ipynb](metamorphs%20(1).ipynb).
+For details, see the code and comments in [metamorphs (1).ipynb](metamorphs%20(1).ipynb).
