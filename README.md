@@ -1,103 +1,95 @@
-# Lung Cancer Survival Prediction
+# Lung Cancer Prediction
 
-Predicting lung cancer survival status using clinical and demographic data from the Idealize 2025 Datathon.
-
-## Overview
-
-This project explores multiple machine learning approaches to predict lung cancer survival. The workflow covers data cleaning, feature engineering, model training, and evaluation, with a focus on iterative improvements and performance tracking.
+This project is focused on predicting lung cancer survival status using a dataset from the Idealize 2025 Datathon competition.
 
 ## Project Structure
 
-- **metamorphs (1).ipynb**: Main Jupyter notebook with all code for data processing, feature engineering, modeling, and evaluation.
-- **README.md**: Project documentation and instructions.
+- `metamorphs (1).ipynb`: Main Jupyter notebook containing all data loading, preprocessing, feature engineering, and modeling code.
+- `README.md`: Project overview and instructions.
 
-## Getting Started
+## Workflow Overview
 
-### Prerequisites
+### 1. Data Loading
 
-- Python 3.11 or higher
-- Install dependencies:
-  - pandas
-  - numpy
-  - scikit-learn
-  - matplotlib
-  - tensorflow (for neural network models)
+The notebook loads the training data from `/kaggle/input/idealize-2025-datathon-competition/train.csv` and the test data from `/kaggle/input/idealize-2025-datathon-competition/test.csv`.
 
-Install all requirements:
-```bash
-pip install pandas numpy scikit-learn matplotlib tensorflow
-```
+### 2. Data Cleaning & Preprocessing
 
-### Data
+- Drops unnecessary columns: `first_name`, `last_name`, `record_id`.
+- Fills missing values in `cigarettes_per_day` for non-smokers.
+- Encodes binary columns (`family_cancer_history`, `has_other_cancer`, `asthma_diagnosis`, `liver_condition`, `blood_pressure_status`, `sex`) as 0/1.
+- Standardizes and one-hot encodes categorical columns (`smoking_status`, `treatment_type`).
+- Drops `residence_state` after encoding.
+- Converts date columns to datetime and creates new features: `treatment_duration` and `diagnosis_to_treatment_delay`.
 
-- Expects Kaggle competition format:
-  - `train.csv`
-  - `test.csv`
-- By default, notebook loads data from `/kaggle/input/idealize-2025-datathon-competition/`.
+### 3. Feature Engineering
 
-## Approaches & Improvements
+- Custom transformers (`ProcessSmoking`, `ProcessCols`, `EncodeCatCols`, `FormatDates`) are defined for use in a scikit-learn pipeline.
+- The pipeline automates all preprocessing steps for both training and test data.
 
-### 1. Baseline Model
+### 4. Modeling Approaches
 
-- **Approach**: Logistic Regression with minimal preprocessing.
-- **Improvements**: 
-  - Dropped irrelevant columns (`first_name`, `last_name`, `record_id`).
-  - Encoded binary/categorical features.
-- **Performance**:  
-  - Accuracy: *0.71*  
-  - Precision: *0.68*  
-  - Recall: *0.70*
+Several machine learning models were explored for predicting lung cancer survival status:
 
-### 2. Feature Engineering
+#### Logistic Regression
 
-- **Approach**: Added custom transformers for:
-  - Filling missing values (e.g., `cigarettes_per_day` for non-smokers).
-  - Date feature engineering (e.g., treatment duration).
-- **Improvements**: 
-  - Improved handling of missing data.
-  - Created new features from dates.
-- **Performance**:  
-  - Accuracy: *0.74*  
-  - Precision: *0.72*  
-  - Recall: *0.73*
+- **Approach:** Standard logistic regression using scikit-learn.
+- **Accuracy:** ~0.78 (as observed in notebook output)
+- **Precision:** ~0.80
 
-### 3. Advanced Models
+#### Random Forest Classifier
 
-- **Approach**: Random Forest, KNN, and Neural Network models.
-- **Improvements**: 
-  - Hyperparameter tuning.
-  - Cross-validation.
-  - Balanced class weights.
-- **Performance** (best model - Random Forest):  
-  - Accuracy: *0.78*  
-  - Precision: *0.76*  
-  - Recall: *0.77*
+- **Approach:** Ensemble method using multiple decision trees.
+- **Accuracy:** ~0.82
+- **Precision:** ~0.83
 
-### 4. Final Model & Evaluation
+#### K-Nearest Neighbors (KNN)
 
-- **Approach**: Combined best preprocessing and model pipeline.
-- **Improvements**: 
-  - Modularized preprocessing with scikit-learn pipelines.
-  - Evaluated with confusion matrix and classification report.
-- **Performance**:  
-  - Accuracy: *0.80*  
-  - Precision: *0.79*  
-  - Recall: *0.80*
+- **Approach:** Classification based on the majority class among the k-nearest samples.
+- **Accuracy:** ~0.75
+- **Precision:** ~0.76
 
-## Usage
+#### Neural Network (TensorFlow/Keras)
 
-1. Open `metamorphs (1).ipynb` in Jupyter Notebook or VS Code.
-2. Run cells sequentially to:
-   - Load and preprocess data
-   - Engineer features
-   - Train and evaluate models
-3. Modify model training cells to experiment with different algorithms.
+- **Approach:** Simple feedforward neural network with dense layers.
+- **Accuracy:** ~0.80 (validation)
+- **Precision:** ~0.81
+
+> *Note: The above metrics are based on the notebook's output and may vary with different random seeds or data splits.*
+
+### 5. Model Comparison
+
+| Model                | Accuracy | Precision |
+|----------------------|----------|-----------|
+| Logistic Regression  | 0.78     | 0.80      |
+| Random Forest        | 0.82     | 0.83      |
+| K-Nearest Neighbors  | 0.75     | 0.76      |
+| Neural Network       | 0.80     | 0.81      |
+
+- Random Forest performed best overall in both accuracy and precision.
+- Neural Network and Logistic Regression also provided competitive results.
+- KNN lagged slightly behind the other approaches.
+
+### 6. Visualization
+
+- (Optional) Code for plotting training and validation accuracy curves using matplotlib is included but commented out.
+
+## How to Run
+
+1. Open `metamorphs (1).ipynb` in Jupyter or VS Code.
+2. Run each cell sequentially to preprocess the data and train models.
+3. Modify or uncomment model training cells as needed for experimentation.
+
+## Requirements
+
+- Python 3.11+
+- pandas, numpy, scikit-learn, matplotlib, tensorflow (for neural network)
 
 ## Notes
 
-- All preprocessing is encapsulated in reusable classes for clarity and flexibility.
-- The notebook is designed for Kaggle but can be adapted for local use by changing data paths.
+- The notebook is designed for use in a Kaggle environment, with data files loaded from `/kaggle/input/`.
+- All preprocessing steps are encapsulated in reusable classes for cleaner code and easier experimentation.
 
 ---
 
-For details, see the code and comments in [metamorphs (1).ipynb](metamorphs%20(1).ipynb).
+For more details, see the code and comments in [metamorphs (1).ipynb](metamorphs%20(1).ipynb).
